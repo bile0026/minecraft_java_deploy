@@ -59,14 +59,24 @@ message_otd: Welcome to my server
 
 level_seed:
 
-# server permission variables set xuids. Add more as needed.
-account_permissions:
-  - permission: operator
-    xuid: xxxxxxx
-  - permission: member
-    xuid: xxxxxxy
-  - permission: visitor
-    xuid: xxxxxxz
+# server permission variables set uuids. Add more as needed. Bypass is whether to bypass user limit.
+op_permissions:
+   - level: 4
+     uuid: xxxxxxxx
+     gamertag: gamertag1
+     bypass: "false"
+  - level: 3
+    uuid: xxxxxxy
+    gamertag: gamertag2
+    bypass: "false"
+  - level: 2
+    uuid: xxxxxxz
+    gamertag: gamertag3
+    bypass: "false"
+  - level: 1
+    uuid: xxxxxxz
+    gamertag: gamertag4
+    bypass: "false"
 
 # whitelist variables set gamertags. Use "" on true/false. Add more as needed
 whitelist_accounts:
