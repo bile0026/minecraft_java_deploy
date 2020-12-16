@@ -64,17 +64,17 @@
     regexp: "^eula="
     line: "eula=true"
 
-- name: Template permissions.json file
+- name: Template ops.json file
   template:
-    src: templates/permissions.json.j2
-    dest: "{{ unpack_dir }}permissions.json"
+    src: templates/ops_json.j2
+    dest: "{{ minecraft_install_path }}ops.json"
   when:
-    - account_permissions is defined
+    - op_permissions is defined
 
 - name: Template whitelist.json file
   template:
     src: templates/whitelist.json.j2
-    dest: "{{ unpack_dir }}/whitelist.json"
+    dest: "{{ minecraft_install_path }}/whitelist.json"
   when:
     - whitelist_accounts is defined
 

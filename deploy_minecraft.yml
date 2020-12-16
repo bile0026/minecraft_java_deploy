@@ -24,7 +24,9 @@
 
     - name: Reboot when required
       reboot:
-      when: reboot.reboot_required
+      when:
+        - ansible_os_family == 'RedHat'
+        - reboot.reboot_required
 
     - name: Create minecraft user
       user:
