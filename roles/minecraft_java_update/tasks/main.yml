@@ -1,0 +1,41 @@
+---
+# tasks file for minecraft_java_update
+- name: Create folders
+  file:
+    state: directory
+    path: "{{ item }}"
+    owner: "{{ service_account }}"
+    group: "{{ service_account }}"
+    mode: "0775"
+  with_items:
+    - "{{ backup_folder }}"
+  become: true
+
+- name: Stop {{ minecraft_service_name }} Service
+  service:
+    name: "{{ minecraft_service_name }}"
+  state: stopped
+
+- name: Backup current version
+  archive:
+    path: "{{ minecraft_install_path }}"
+    dest: "{{ backup_folder }}{{ minecraft_server_name }}_minecraft_java_backup_{{ date }}.tar.gz"
+    format: gz
+    force_archive: true
+
+- name: Download Minecraft Java Server
+  get_url:
+    url: "{{ java_url }}"
+    dest: "{{ minecraft_install_path }}"
+    mode: "0775"
+    owner: "{{ service_account }}"
+    group: "{{ service_account }}"
+
+- name: Customize server.properties
+  include_tasks: server_properties.yml
+
+- name: Start minecraft service
+  service:
+    name: "{{ minecraft_service_name }}"
+    state: started
+  become: true

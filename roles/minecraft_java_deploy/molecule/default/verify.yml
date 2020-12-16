@@ -1,0 +1,13 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Verify minecraft bedrock service is created
+      assert:
+        that: ansible_facts.services['my_server_minecraft.service'] is defined
+    # - name: Verify bedrock connect service is created
+    #   assert:
+    #     that: ansible_facts.services['bedrock_connect.service'] is defined

@@ -1,0 +1,40 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: CentOS-8
+    image: docker.io/pycontribs/centos:8
+    pre_build_image: true
+    command: /sbin/init
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  - name: CentOS-7
+    image: fiercely/centos7:systemd
+    pre_build_image: true
+    command: /sbin/init
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  # - name: Ubuntu-2004
+  #   image: ubuntu:20.04
+  #   pre_build_image: true
+  # - name: Ubuntu-1804
+  #   image: solita/ubuntu-systemd:18.04
+  #   pre_build_image: true
+  #   command: /sbin/init
+  #   tmpfs:
+  #     - /run
+  #     - /tmp
+  #   volumes:
+  #     - /sys/fs/cgroup:/sys/fs/cgroup:ro
+provisioner:
+  name: ansible
+verifier:
+  name: ansible

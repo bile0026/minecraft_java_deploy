@@ -1,0 +1,94 @@
+---
+# tasks file for minecraft_java_deploy
+
+- name: Create Folders
+  file:
+    state: directory
+    path: "{{ item }}"
+    owner: "{{ service_account }}"
+    group: "{{ service_account }}"
+    mode: "0775"
+  with_items:
+    - "{{ minecraft_install_path }}"
+
+# FIXME
+# - name: Modify firewalld configuration for bedrock server ports
+#   ansible.posix.firewalld:
+#     port: item
+#     permanent: yes
+#     state: enabled
+#   with_items:
+#     - "{{ server_port }}/udp"
+#     - "{{ ipv6_server_port }}/udp"
+#   when: ansible_os_family == 'RedHat'
+
+- name: Create minecraft service
+  template:
+    src: templates/minecraft_service.j2
+    dest: "/etc/systemd/system/{{ minecraft_server_name }}_minecraft.service"
+    mode: +x
+  register: create_service
+
+- name: reload systemd
+  command: systemctl daemon-reload
+  when: create_service.changed
+
+- name: Download Minecraft Java Server
+  get_url:
+    url: "{{ java_url }}"
+    dest: "{{ minecraft_install_path }}"
+    mode: "0775"
+    owner: "{{ service_account }}"
+    group: "{{ service_account }}"
+
+- name: Inital start of Java Server to gen EULA
+  command: java -Xms{{ min_memory }} -Xmx{{ max_memory }} -jar {{ minecraft_install_path }}server.jar nogui
+  args:
+    chdir: "{{ minecraft_install_path }}"
+  become: false
+  register: first_start
+
+- name: Accept EULA
+  lineinfile:
+    path: "{{ eula_file }}"
+    regexp: "^eula="
+    line: "eula=true"
+  when: first_start.stdout is search("EULA")
+
+- name: Customize server.properties
+  include_tasks: server_properties.yml
+
+- name: Template permissions.json file
+  template:
+    src: templates/permissions.json.j2
+    dest: "{{ unpack_dir }}permissions.json"
+  when:
+    - account_permissions is defined
+
+- name: Template whitelist.json file
+  template:
+    src: templates/whitelist.json.j2
+    dest: "{{ unpack_dir }}/whitelist.json"
+  when:
+    - whitelist_accounts is defined
+
+- name: reload systemd
+  command: systemctl daemon-reload
+  when: create_service.changed
+
+- name: Set permissions
+  file:
+    state: directory
+    path: "{{ item }}"
+    owner: "{{ service_account }}"
+    group: "{{ service_account }}"
+    mode: "0755"
+    recurse: true
+  with_items:
+    - "{{ minecraft_install_path }}"
+
+- name: Start new minecraft service
+  service:
+    name: "{{ minecraft_service_name }}"
+    enabled: true
+    state: started

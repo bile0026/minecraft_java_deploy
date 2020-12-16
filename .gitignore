@@ -1,0 +1,3 @@
+molecule-venv/
+hosts
+test_*

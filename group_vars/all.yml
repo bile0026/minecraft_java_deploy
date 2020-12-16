@@ -1,0 +1,54 @@
+---
+# global vars for deploy and upgrade.
+
+# url to download the version you want. Get from https://www.minecraft.net/en-us/download/server
+java_url: https://launcher.mojang.com/v1/objects/35139deedbd5182953cf1caa23835da59ca3d7cd/server.jar
+
+# variables for server customization. See readme for allowed options.
+minecraft_server_name: my_server
+message_otd: Welcome to my_server
+max_memory: 1024M
+min_memory: 1024M
+max_players: 10
+gamemode: survival
+difficulty: easy
+online_mode: "true"
+whitelist: "false"
+# server port needs to be unique for each server running on the same host
+server_port: 25565
+# remote console port
+rcon_port: 25575
+rcon_password: change_me
+pvp_onoff: "true"
+level_name: my_level
+level_seed:
+
+# server permission variables set xuids. Add more as needed.
+# account_permissions:
+#   - permission: operator
+#     xuid: xxxxxxx
+#   - permission: member
+#     xuid: xxxxxxy
+#   - permission: visitor
+#     xuid: xxxxxxz
+
+# whitelist variables set gamertags. Use "" on true/false. Add more as needed.
+# whitelist_accounts:
+#   - playerlimit: "true"
+#     gamertag: gamertag1
+#   - playerlimit: "false"
+#     gamertag: gamertag2
+
+# standard variables
+service_account: minecraft
+date: "{{ lookup('pipe','date +%Y-%m-%d') }}"
+minecraft_service_name: "{{ minecraft_server_name }}_minecraft.service"
+minecraft_install_path: /etc/{{ minecraft_server_name }}_minecraft/
+backup_folder: /etc/minecraft_backups/
+
+# variable directories
+tmp_dir: /tmp/{{ minecraft_server_name }}_minecraft/
+unpack_dir: /tmp/{{minecraft_server_name}}_minecraft/unpack/
+server_properties_file: "{{ minecraft_install_path }}server.properties"
+eula_file: "{{ minecraft_install_path }}eula.txt"
+

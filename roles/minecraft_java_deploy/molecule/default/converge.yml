@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include minecraft_java_deploy"
+      include_role:
+        name: "minecraft_java_deploy"
+    # - name: "Include minecraft_bedrock_connect"
+    #   include_role:
+    #     name: "minecraft_bedrock_connect"

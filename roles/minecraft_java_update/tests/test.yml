@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  remote_user: root
+  roles:
+<<<<<<< HEAD:minecraft_java_update/tests/test.yml
+    - minecraft_java_update
+=======
+    - ansible_role_default
+>>>>>>> 8c0eda2c231ed134997df9cb710fbf048555f2d3:ansible_role_default/tests/test.yml
