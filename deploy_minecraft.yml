@@ -60,8 +60,8 @@
 
     - import_role:
         name: minecraft_java_deploy
-      when: ansible_facts.services[minecraft_service_name] is not defined
+    #   when: ansible_facts.services[minecraft_service_name] is not defined
 
-    - import_role:
-        name: minecraft_java_update
-      when: ansible_facts.services[minecraft_service_name] is defined
+    # - import_role:
+    #     name: minecraft_java_update
+    #   when: ansible_facts.services[minecraft_service_name] is defined
