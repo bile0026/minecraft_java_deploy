@@ -21,7 +21,7 @@
   lineinfile:
     path: "{{ server_properties_file }}"
     regexp: "^difficulty="
-    line: "difficulty={{ minecraft_server_name }}"
+    line: "difficulty={{ difficulty }}"
 
 - name: Set online-mode
   lineinfile:

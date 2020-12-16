@@ -1,20 +1,18 @@
 ---
 # tasks file for minecraft_java_update
+
 - name: Create folders
   file:
     state: directory
-    path: "{{ item }}"
+    path: "{{ backup_folder }}"
     owner: "{{ service_account }}"
     group: "{{ service_account }}"
     mode: "0775"
-  with_items:
-    - "{{ backup_folder }}"
-  become: true
 
 - name: Stop {{ minecraft_service_name }} Service
   service:
     name: "{{ minecraft_service_name }}"
-  state: stopped
+    state: stopped
 
 - name: Backup current version
   archive:
@@ -37,5 +35,5 @@
 - name: Start minecraft service
   service:
     name: "{{ minecraft_service_name }}"
+    enabled: true
     state: started
-  become: true
