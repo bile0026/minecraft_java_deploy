@@ -42,6 +42,14 @@ level_seed:
 # standard variables
 service_account: minecraft
 date: "{{ lookup('pipe','date +%Y-%m-%d') }}"
+# eula_date: "{{ lookup('pipe', 'date +%a%b%d%H:%M:%S%Z%Y') }}"
+eula_day: "{{ lookup('pipe', 'date +%a') }}"
+eula_month: "{{ lookup('pipe', 'date +%b') }}"
+eula_dom: "{{ lookup('pipe', 'date +%d') }}"
+eula_time: "{{ lookup('pipe', 'date +%H:%M:%S') }}"
+eula_zone: "{{ lookup('pipe', 'date +%Z') }}"
+eula_year: "{{ lookup('pipe', 'date +%Y') }}"
+eula_date: "{{ eula_day}} {{ eula_month }} {{ eula_dom }} {{ eula_time }} {{ eula_zone }} {{ eula_year }}"
 minecraft_service_name: "{{ minecraft_server_name }}_minecraft.service"
 minecraft_install_path: /etc/{{ minecraft_server_name }}_minecraft/
 backup_folder: /etc/minecraft_backups/

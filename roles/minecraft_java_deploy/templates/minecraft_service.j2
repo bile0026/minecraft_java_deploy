@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 User={{ service_account }}
-ExecStart=java -Xmx{{ max_memory }} -Xms{{ min_memory }} -jar {{ minecraft_install_path }}server.jar nogui
+ExecStart=/bin/sh {{ minecraft_install_path }}start_{{ minecraft_server_name }}_minecraft.sh
 Restart=always
 
 [Install]

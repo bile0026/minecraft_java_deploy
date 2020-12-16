@@ -29,6 +29,14 @@
     mode: +x
   register: create_service
 
+- name: Create server start script
+  template:
+    src: templates/minecraft_service_script.j2
+    dest: "{{ minecraft_install_path }}start_{{ minecraft_server_name }}_minecraft.sh"
+    owner: "{{ service_account }}"
+    group: "{{ service_account }}"
+    mode: +x
+
 - name: reload systemd
   command: systemctl daemon-reload
   when: create_service.changed
@@ -37,26 +45,24 @@
   get_url:
     url: "{{ java_url }}"
     dest: "{{ minecraft_install_path }}"
-    mode: "0775"
+
+- name: Set EULA
+  template:
+    src: templates/eula.j2
+    dest: "{{ minecraft_install_path }}eula.txt"
+
+- name: Set Server.Properties file
+  template:
+    src: templates/server_properties.j2
+    dest: "{{ minecraft_install_path }}server.properties"
     owner: "{{ service_account }}"
     group: "{{ service_account }}"
-
-- name: Inital start of Java Server to gen EULA
-  command: java -Xms{{ min_memory }} -Xmx{{ max_memory }} -jar {{ minecraft_install_path }}server.jar nogui
-  args:
-    chdir: "{{ minecraft_install_path }}"
-  become: false
-  register: first_start
 
 - name: Accept EULA
   lineinfile:
     path: "{{ eula_file }}"
     regexp: "^eula="
     line: "eula=true"
-  when: first_start.stdout is search("EULA")
-
-- name: Customize server.properties
-  include_tasks: server_properties.yml
 
 - name: Template permissions.json file
   template:
@@ -78,14 +84,11 @@
 
 - name: Set permissions
   file:
-    state: directory
-    path: "{{ item }}"
+    path: "{{ minecraft_install_path }}"
     owner: "{{ service_account }}"
     group: "{{ service_account }}"
-    mode: "0755"
+    mode: u=rwx,g=rwx,o=rx
     recurse: true
-  with_items:
-    - "{{ minecraft_install_path }}"
 
 - name: Start new minecraft service
   service:
