@@ -9,6 +9,8 @@ git clone <repo_url>
 git checkout tag/<tag_name>
 ```
 
+* Once deployment finishes, be sure to give the server a few minutes to generate the world depending on the speed of your CPU.
+
 # Current caveats
 * Currently just disables firewalld on RedHat-based servers. Working on modifying instead.
 * Disables SELINUX on systems running it. Working on modificiations to allow instead.
