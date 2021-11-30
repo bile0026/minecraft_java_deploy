@@ -44,7 +44,7 @@
     - name: Install Packages RedHat
       yum:
         name:
-          - java-11-openjdk
+          - java-latest-openjdk
           - unzip
           - wget
         state: present
