@@ -21,7 +21,8 @@ rcon_port: 25575
 rcon_password: change_me
 pvp_onoff: "true"
 level_name: my_level
-level_seed:
+# only uncomment if you actually want to set a level seed
+#level_seed:
 
 # server permission variables set xuids. Add more as needed.
 # see here for op levels: https://nodecraft.com/support/games/minecraft/how-to-set-a-player-as-op-admin
@@ -42,7 +43,6 @@ level_seed:
 #     uuid: xxxxxxz
 #     gamertag: gamertag4
 #     bypass: "false"
-
 
 # whitelist variables set gamertags. Use "" on true/false. Add more as needed.
 # whitelist_accounts:
@@ -71,4 +71,3 @@ tmp_dir: /tmp/{{ minecraft_server_name }}_minecraft/
 unpack_dir: /tmp/{{minecraft_server_name}}_minecraft/unpack/
 server_properties_file: "{{ minecraft_install_path }}server.properties"
 eula_file: "{{ minecraft_install_path }}eula.txt"
-
