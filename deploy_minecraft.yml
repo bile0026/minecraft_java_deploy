@@ -53,7 +53,7 @@
     - name: Install Packages Debian
       apt:
         name:
-          - openjdk-11-jdk
+          - openjdk-25-jdk
           - libcurl4
           - unzip
           - wget
